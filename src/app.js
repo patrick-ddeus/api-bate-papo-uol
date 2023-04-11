@@ -6,7 +6,11 @@ import ConnectDatabase from "./database/connect.js";
 import ParticipantRouter from "./routes/participants.routes.js";
 import MessageRouter from "./routes/message.routes.js";
 import StatusRouter from "./routes/status.routes.js";
+import removeInativeUsers from "./helpers/removeInativeUsers.js";
+
 const app = express();
+const MILLISECONDS = 1000;
+const SECONDS_TO_EXPIRE = 15;
 
 dotenv.config();
 app.use(cors());
@@ -20,3 +24,7 @@ ConnectDatabase();
 app.listen(process.env.PORT, () => console.log(`
     Servidor iniciado em: http://${process.env.HOST}:${process.env.PORT}
 `));
+
+setInterval(() => {
+    removeInativeUsers();
+}, SECONDS_TO_EXPIRE * MILLISECONDS);

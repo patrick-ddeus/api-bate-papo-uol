@@ -5,10 +5,12 @@ const getParticipants = () => collection.find().toArray();
 const getOneParticipant = (objectQuery) => collection.find(objectQuery).toArray();
 const createParticipant = (objectQuery) => collection.insertOne(objectQuery)
 const updateParticipant = (objectQuery, update) => collection.updateOne(objectQuery, update)
+const deleteParticipants = (objectQuery) => collection.deleteMany(objectQuery)
 
 export default {
     getParticipants,
     getOneParticipant,
     createParticipant,
-    updateParticipant
+    updateParticipant,
+    deleteParticipants
 }

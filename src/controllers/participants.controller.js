@@ -1,4 +1,6 @@
 import ParticipantService from "../services/participants.service.js";
+import MessagesService from "../services/messages.service.js";
+import dayjs from "dayjs";
 
 const getAllParticipants = async (_, res) => {
     const participants = await ParticipantService.getParticipants();
@@ -15,6 +17,14 @@ const createParticipant = async (req, res) => {
 
     try {
         await ParticipantService.createParticipant(objectQuery);
+        MessagesService.postMessage(
+            {
+                from: name,
+                to: "Todos",
+                text: "entra na sala...",
+                type: "status",
+                time: dayjs().format("HH:mm:ss")
+            });
         res.status(201).json({ message: "OK" });
     } catch (e) {
         console.error(e.message);

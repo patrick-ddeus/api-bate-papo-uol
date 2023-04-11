@@ -9,7 +9,7 @@ export const validStatus = async (req, res, next) => {
         return res.status(404).json({ message: "Must send user in headers" });
     }
 
-    if (!userInDatabase) {
+    if (userInDatabase.length === 0) {
         return res.status(404).json({ message: "User not registered" });
     }
 

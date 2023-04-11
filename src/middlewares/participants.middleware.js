@@ -12,7 +12,7 @@ export const validParticipant = async (req, res, next) => {
     const { error } = schema.validate({ name });
 
     if (error) {
-        return res.status(422).send(error);
+        return res.status(422).send(error.details[0].message);
     }
 
     if (userInDatabase.length !== 0) {
