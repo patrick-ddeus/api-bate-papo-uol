@@ -6,7 +6,7 @@ import ConnectDatabase from "./database/connect.js";
 import ParticipantRouter from "./routes/participants.routes.js";
 import MessageRouter from "./routes/message.routes.js";
 import StatusRouter from "./routes/status.routes.js";
-import removeInativeUsers from "./helpers/removeInativeUsers.js";
+import manageInativeUsers from "./helpers/managerInativeUsers.js";
 
 const app = express();
 const MILLISECONDS = 1000;
@@ -26,5 +26,5 @@ app.listen(process.env.PORT, () => console.log(`
 `));
 
 setInterval(() => {
-    removeInativeUsers();
+    manageInativeUsers();
 }, SECONDS_TO_EXPIRE * MILLISECONDS);

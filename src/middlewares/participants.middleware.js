@@ -3,7 +3,7 @@ import ParticipantService from "../services/participants.service.js";
 
 export const validParticipant = async (req, res, next) => {
     const { name } = req.body;
-    const userInDatabase = await ParticipantService.getOneParticipant({ name });
+    const userInDatabase = await ParticipantService.getOneOrManyParticipants({ name });
 
     const schema = Joi.object({
         name: Joi.string().required()
