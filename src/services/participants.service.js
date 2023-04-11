@@ -1,3 +1,12 @@
 import { database } from "../database/connect.js";
+const collection = database.collection("participants");
 
-export const getParticipants = () => database.collection("participants").find().toArray(); 
+const getParticipants = () => collection.find().toArray();
+const getOneParticipant = (objectQuery) => collection.find(objectQuery).toArray();
+const createParticipant = (objectQuery) => collection.insertOne(objectQuery)
+
+export default {
+    getParticipants,
+    getOneParticipant,
+    createParticipant
+}
