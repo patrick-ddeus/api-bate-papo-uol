@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import ConnectDatabase from "./database/connect.js";
 import ParticipantRouter from "./routes/participants.routes.js";
 import MessageRouter from "./routes/message.routes.js";
+import StatusRouter from "./routes/status.routes.js";
 const app = express();
 
 dotenv.config();
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/participants", ParticipantRouter);
 app.use("/messages", MessageRouter);
+app.use("/status", StatusRouter);
 
 ConnectDatabase();
 app.listen(process.env.PORT, () => console.log(`
