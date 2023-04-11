@@ -29,6 +29,17 @@ export const validMessage = async (req, res, next) => {
 };
 
 export const validGetMessage = async (req, res, next) => {
-    const limit = req.query;
-    res.send(limit);
+    const { limit } = req.query;
+
+    if(Number(limit) < 0){
+        return res.status(422).json({message: "Invalid limit argument!"})
+    }
+
+    if(!limit){
+        req.limit = 0
+    }else{
+        req.limit = Number(limit)
+    }
+
+    return next()
 };
