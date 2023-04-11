@@ -15,9 +15,9 @@ const createParticipant = async (req, res) => {
 
     try {
         await ParticipantService.createParticipant(objectQuery);
-        res.status(201).send("OK")
+        res.status(201).json({ message: "OK" });
     } catch (e) {
-        console.error(e.message)
+        console.error(e.message);
     }
 };
 

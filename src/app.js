@@ -3,8 +3,8 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import ConnectDatabase from "./database/connect.js";
-import ParticipantRouter from "./routes/participants.route.js";
-
+import ParticipantRouter from "./routes/participants.routes.js";
+import MessageRouter from "./routes/message.routes.js";
 const app = express();
 
 dotenv.config();
@@ -12,6 +12,7 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/participants", ParticipantRouter);
+app.use("/messages", MessageRouter);
 
 ConnectDatabase();
 app.listen(process.env.PORT, () => console.log(`
