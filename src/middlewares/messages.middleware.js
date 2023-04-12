@@ -16,6 +16,10 @@ export const validMessage = async (req, res, next) => {
 
     const { error } = schema.validate({ to, text, type });
 
+    if(!req.headers.user){
+        return res.status(422).json({ message: "Headers must contain user" });
+    }
+
     if (error) {
         return res.status(422).json({
             message: "Invalid body field!",
@@ -23,7 +27,7 @@ export const validMessage = async (req, res, next) => {
         });
     }
 
-    if (userInRoom.length !== 1) {
+    if (userInRoom.length === 0) {
         return res.status(422).json({ message: "User must be logged in!" });
     }
     req.body = { to, text, type, user };
