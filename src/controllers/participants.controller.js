@@ -6,7 +6,7 @@ const getAllParticipants = async (_, res) => {
     const participants = await ParticipantService.getParticipants();
 
     if (participants) {
-        res.status(201).json(participants);
+        res.status(200).json(participants);
     }
 };
 

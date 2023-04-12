@@ -7,7 +7,7 @@ export const validParticipant = async (req, res, next) => {
     const userInDatabase = await ParticipantService.getOneOrManyParticipants({ name });
 
     const schema = Joi.object({
-        name: Joi.string().required()
+        name: Joi.alphanum().required()
     });
 
     const { error } = schema.validate({ name });

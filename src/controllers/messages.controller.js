@@ -8,7 +8,7 @@ const getAllMessages = async (req, res) => {
 
     try {
         const messages = await MessagesService.getMessages(objectQuery, limit);
-        res.status(201).json(messages);
+        res.status(200).json(messages);
     } catch (err) {
         console.error(err);
     }
