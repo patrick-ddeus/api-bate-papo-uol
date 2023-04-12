@@ -18,13 +18,13 @@ export const validMessage = async (req, res, next) => {
 
     if (error) {
         return res.status(422).json({
-            message: "Campo body inválido!",
+            message: "Invalid body field!",
             error: error.details[0].message
         });
     }
 
     if (userInRoom.length !== 1) {
-        return res.status(422).json({ message: "Usuário precisa estar logado" });
+        return res.status(422).json({ message: "User must be logged in!" });
     }
     req.body = { to, text, type, user };
 

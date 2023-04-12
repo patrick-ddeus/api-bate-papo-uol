@@ -17,7 +17,7 @@ export const validParticipant = async (req, res, next) => {
     }
 
     if (userInDatabase.length !== 0) {
-        return res.status(409).send("Usuário já logado");
+        return res.status(409).send("User already in room!");
     }
 
     req.body.name = name;
