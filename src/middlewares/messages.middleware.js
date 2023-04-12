@@ -1,9 +1,9 @@
 import Joi from "joi";
 import ParticipantsService from "../services/participants.service.js";
+import sanitizeObjects from "../helpers/sanitizeObject.js";
 
 export const validMessage = async (req, res, next) => {
-    const { to, text, type } = req.body;
-    const { user } = req.headers;
+    const { to, text, type, user } = sanitizeObjects({ ...req.body, user: req.headers.user });
     const userInRoom = await ParticipantsService.getOneOrManyParticipants({ name: user });
 
     const schema = Joi.object({
@@ -24,7 +24,8 @@ export const validMessage = async (req, res, next) => {
     if (userInRoom.length !== 1) {
         return res.status(422).json({ message: "Usuário precisa estar logado" });
     }
-
+    req.body = { to, text, type, user };
+    
     return next();
 };
 

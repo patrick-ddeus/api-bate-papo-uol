@@ -1,8 +1,9 @@
 import Joi from "joi";
 import ParticipantService from "../services/participants.service.js";
+import sanitizeObjects from "../helpers/sanitizeObject.js";
 
 export const validParticipant = async (req, res, next) => {
-    const { name } = req.body;
+    const { name } = sanitizeObjects(req.body);
     const userInDatabase = await ParticipantService.getOneOrManyParticipants({ name });
 
     const schema = Joi.object({
@@ -19,5 +20,7 @@ export const validParticipant = async (req, res, next) => {
         return res.status(409).send("Usuário já logado");
     }
 
+    req.body.name = name;
+    
     return next();
 };
