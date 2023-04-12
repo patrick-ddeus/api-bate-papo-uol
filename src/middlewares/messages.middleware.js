@@ -1,6 +1,8 @@
 import Joi from "joi";
 import ParticipantsService from "../services/participants.service.js";
+import MessagesService from "../services/messages.service.js";
 import sanitizeObjects from "../helpers/sanitizeObject.js";
+import { ObjectId } from "mongodb";
 
 export const validMessage = async (req, res, next) => {
     const { to, text, type, user } = sanitizeObjects({ ...req.body, user: req.headers.user });
@@ -25,7 +27,7 @@ export const validMessage = async (req, res, next) => {
         return res.status(422).json({ message: "Usuário precisa estar logado" });
     }
     req.body = { to, text, type, user };
-    
+
     return next();
 };
 
@@ -43,4 +45,24 @@ export const validGetMessage = async (req, res, next) => {
     }
 
     return next();
+};
+
+export const validOwnerMessage = async (req, res, next) => {
+    const { id } = req.params;
+    const { user } = sanitizeObjects(req.headers);
+    const ObjectID = new ObjectId(id);
+
+    const messages = await MessagesService.getMessages({ _id: ObjectID });
+
+    if (messages.length === 0) {
+        return res.status(404).json({ message: "incorret id!" });
+    }
+
+    if (messages[0].from !== user) {
+        return res.status(401).json({ message: "You're not the owner of message" });
+    }
+
+    req.messageID = { id: ObjectID }
+
+    return next()
 };
