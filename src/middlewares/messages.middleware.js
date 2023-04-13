@@ -5,6 +5,10 @@ import sanitizeObjects from "../helpers/sanitizeObject.js";
 import { ObjectId } from "mongodb";
 
 export const validMessage = async (req, res, next) => {
+    if (!req.headers.user) {
+        return res.status(422).json({ message: "Headers must contain user" });
+    }
+
     const { to, text, type, user } = sanitizeObjects({ ...req.body, user: req.headers.user });
     const userInRoom = await ParticipantsService.getOneOrManyParticipants({ name: user });
 
@@ -15,10 +19,6 @@ export const validMessage = async (req, res, next) => {
     });
 
     const { error } = schema.validate({ to, text, type });
-
-    if(!req.headers.user){
-        return res.status(422).json({ message: "Headers must contain user" });
-    }
 
     if (error) {
         return res.status(422).json({
@@ -38,15 +38,20 @@ export const validMessage = async (req, res, next) => {
 export const validGetMessage = async (req, res, next) => {
     const { limit } = req.query;
 
-    if (Number(limit) < 0) {
-        return res.status(422).json({ message: "Invalid limit argument!" });
-    }
-
     if (!limit) {
         req.limit = 0;
-    } else {
-        req.limit = Number(limit);
+        return next();
+    } 
+
+    const cleanedLimit = limit.replace(/\D+/, "")
+    const parsedLimit = parseInt(cleanedLimit);
+  
+    if (parsedLimit <= 0 || isNaN(parsedLimit)) {
+        return res.status(422).json({ message: "Invalid limit parameter!" });
     }
+
+    req.limit = parsedLimit;
+    
 
     return next();
 };
@@ -66,7 +71,7 @@ export const validOwnerMessage = async (req, res, next) => {
         return res.status(401).json({ message: "You're not the owner of message" });
     }
 
-    req.messageID = { id: ObjectID }
+    req.messageID = { id: ObjectID };
 
-    return next()
+    return next();
 };
