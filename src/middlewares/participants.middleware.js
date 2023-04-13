@@ -3,6 +3,10 @@ import ParticipantService from "../services/participants.service.js";
 import sanitizeObjects from "../helpers/sanitizeObject.js";
 
 export const validParticipant = async (req, res, next) => {
+    if (typeof req.body.name === "number") {
+        return res.status(422).send("invalid name field!");
+    }
+
     const { name } = sanitizeObjects(req.body);
     const userInDatabase = await ParticipantService.getOneOrManyParticipants({ name });
 
