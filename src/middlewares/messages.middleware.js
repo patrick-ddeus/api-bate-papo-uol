@@ -45,8 +45,8 @@ export const validGetMessage = async (req, res, next) => {
 
     const cleanedLimit = limit.replace(/\D+/, "")
     const parsedLimit = parseInt(cleanedLimit);
-  
-    if (parsedLimit <= 0 || isNaN(parsedLimit)) {
+
+    if (limit <= 0 || isNaN(parsedLimit)) {
         return res.status(422).json({ message: "Invalid limit parameter!" });
     }
 
